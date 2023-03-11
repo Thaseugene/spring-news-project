@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+<br><br>
+<br><br>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-5">
+            <div class="card bg-light shadow-sm">
+                <br><br>
+                <h2 class="align-self-center text-secondary">Welcome</h2>
+                <div class="login-wrap p-4 p-md-5">
+                    <p class="text-center" ><img class="mx-auto" th:src="@{/images/93e3fb0eec46d93a0749a965747a7d9b.png}"/></p>
+                    <h3 class="text-center mb-4 text-secondary">Sign In</h3>
+                    <form th:action="@{/auth/processForm}" method="post" class="login-form">
+                        <div class="form-group">
+                            <input type="text" class="form-control rounded-left" placeholder="Login" name="login"
+                                   required>
+                        </div>
+                        <div class="form-group d-flex">
+                            <input type="password" class="form-control rounded-left" placeholder="Password"
+                                   name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="form-control btn btn-secondary rounded submit px-3">Login
+                            </button>
+                        </div>
+                        <div class="row justify-content-center" th:if="${param.error != null}">
+                            <p class="text-danger" th:text="${param.error}"></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<br><br>
+</body>
+</html>

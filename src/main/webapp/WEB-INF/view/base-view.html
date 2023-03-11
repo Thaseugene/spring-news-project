@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring-auth</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css"
+          rel="stylesheet" media="screen,projection">
+    <link th:href="@{/css/bootstrap.css}" type="text/css" rel="stylesheet" media="screen,projection">
+    <link th:href="@{/css/bootstrap-grid.css}" type="text/css" rel="stylesheet" media="screen,projection">
+    <link th:href="@{/css/bootstrap-reboot.css}" type="text/css" rel="stylesheet" media="screen,projection">
+    <link th:href="@{/css/nav.css}" type="text/css" rel="stylesheet" media="screen,projection">
+
+</head>
+<body style="background-color: #f5f5f5">
+
+<div th:replace="templates/header.html"></div>
+
+<div class="sidenav">
+    <div class="justify-content-center">
+        <ul class="list-group">
+            <li>
+                <a class="list-group-item list-group-item-action text-center" href="#">Link 1</a>
+            </li>
+            <li>
+                <a class="list-group-item list-group-item-action text-center" href="#">Link 1</a>
+            </li>
+            <li>
+                <a class="list-group-item list-group-item-action text-center" href="#">Link 1</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<div th:if="${presentation == 'authentication'}">
+    <div th:replace="templates/auth.html"></div>
+</div>
+
+<div th:if="${presentation == 'registration'}">
+    <div th:replace="templates/register.html"></div>
+</div>
+
+<div th:if="${presentation == 'userView'}">
+    <div th:replace="templates/user-view.html"></div>
+</div>
+
+<div th:if="${presentation == 'newsList'}">
+    <div th:replace="templates/news-list.html"></div>
+</div>
+
+<div th:replace="templates/footer.html"></div>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.js}"></script>
+<script th:src="@{/js/bootstrap.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/nav.js}"></script>
+</body>
+</html>

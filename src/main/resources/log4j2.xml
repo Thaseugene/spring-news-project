@@ -1,0 +1,21 @@
+<configuration status="WARN">
+    <appenders>
+
+        <File name="fileLog" fileName="target/mylogfile.log">
+<!--            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
+            <patternLayout pattern="%d{ABSOLUTE} [%-5p] (%F:%L) - %m%n" />
+        </File>
+
+        <console name="out" target="SYSTEM_OUT">
+<!--            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
+            <patternLayout pattern="%d{ABSOLUTE} [%-5p] (%F:%L) - %m%n" />
+        </console>
+    </appenders>
+
+    <loggers>
+        <root level="info">
+            <appender-ref ref="fileLog" level="info"/>
+            <appender-ref ref="out" level="info"/>
+        </root>
+    </loggers>
+</configuration>
