@@ -1,4 +1,4 @@
-package com.spring.news.service;
+package com.spring.news.service.exception;
 
 public class IncorrectLoginException extends Exception{
 

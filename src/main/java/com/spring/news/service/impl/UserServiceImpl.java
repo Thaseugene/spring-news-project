@@ -1,42 +1,40 @@
 package com.spring.news.service.impl;
 
-import com.spring.news.model.Role;
 import com.spring.news.model.User;
 import com.spring.news.repository.UserRepository;
 import com.spring.news.repository.UserRepositoryException;
-import com.spring.news.service.*;
-import org.mindrot.jbcrypt.BCrypt;
+import com.spring.news.service.exception.AlreadyExistsException;
+import com.spring.news.service.exception.IncorrectLoginException;
+import com.spring.news.service.UserService;
+import com.spring.news.service.exception.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.Random;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private final String salt = BCrypt.gensalt();
-    private UserServiceImpl() {
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-
     @Override
-    public void addNewUser(UserForm userForm) throws UserServiceException, AlreadyExistsException {
+    @Transactional
+    public void addNewUser(User user) throws UserServiceException, AlreadyExistsException {
         try {
-            if (!userRepository.checkIsLoginExists(userForm.getLogin())) {
-                User user = new User(
-                        (new Random()).nextInt(),
-                        userForm.getLogin(),
-                        BCrypt.hashpw(userForm.getPassword(), salt),
-                        userForm.getEmail(),
-                        Role.USER,
-                        true,
-                        userForm.getName(),
-                        userForm.getSurname(),
-                        new Date());
+            Optional<User> userOptional = userRepository.takeUserByLogin(user.getLogin());
+            if (!userOptional.isPresent()) {
+                String encodedPassword = passwordEncoder.encode(user.getPassword());
+                user.setPassword(encodedPassword);
                 userRepository.addNewUser(user);
             } else {
                 throw new AlreadyExistsException("User with this login already exists");
@@ -47,11 +45,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User getUserByLoginAndPass(String login, String password) throws UserServiceException, IncorrectLoginException {
         try {
-            int id = userRepository.takeUsersIdByLogin(login, password);
-            if (id != 0) {
-                return userRepository.takeUserById(id);
+            Optional<User> userOptional = userRepository.takeUserByLogin(login);
+            if (userOptional.isPresent()) {
+                if(passwordEncoder.matches(password,userOptional.get().getPassword())) {
+                    return userOptional.get();
+                } else {
+                    throw new IncorrectLoginException("Incorrect login or password");
+                }
             } else {
                 throw new IncorrectLoginException("Incorrect login or password");
             }

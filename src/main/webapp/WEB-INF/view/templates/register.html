@@ -1,41 +1,46 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<body>
+
 <br><br>
-<br><br>
+
+<br>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-5">
             <div class="card bg-light shadow-sm">
-                <br><br>
-                <h2 class="align-self-center text-secondary">Welcome</h2>
-                <div class="login-wrap p-4 p-md-5">
+                <div class="login-wrap p-5">
+                    <h2 class="text-center text-secondary mb-4">Welcome</h2>
                     <p class="text-center" ><img class="mx-auto" th:src="@{/images/93e3fb0eec46d93a0749a965747a7d9b.png}"/></p>
                     <h3 class="text-center mb-4 text-secondary">Register</h3>
-                    <form th:action="@{/reg/processForm}" method="post" class="login-form" th:object="${userForm}">
+                    <form th:action="@{/user/processRegForm}" method="post" class="login-form" th:object="${user}">
                         <div class="form-group">
-                            <input type="text" class="form-control rounded-left" placeholder="Name" name="name"
-                                   th:field="*{name}" required>
+                            <input type="text" class="form-control rounded-left" placeholder="Name" name="userDetails.name"
+                                   th:field="*{userDetails.name}">
+                            <p class="text-danger" th:if="${#fields.hasErrors('userDetails.name')}" th:errors="*{userDetails.name}"></p>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control rounded-left" placeholder="Surname" name="surname"
-                                   th:field="*{surname}" required>
+                            <input type="text" class="form-control rounded-left" placeholder="Surname" name="userDetails.surname"
+                                   th:field="*{userDetails.surname}" >
+                            <p class="text-danger" th:if="${#fields.hasErrors('userDetails.surname')}" th:errors="*{userDetails.surname}"></p>
                         </div>
                         <div class="form-group">
                             <input type="text" class="form-control rounded-left" placeholder="Email" name="email"
-                                   th:field="*{email}" required>
+                                   th:field="*{email}">
+                            <p class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
                         </div>
                         <div class="form-group">
                             <input type="text" class="form-control rounded-left" placeholder="Login" name="login"
-                                   th:field="*{login}" required>
+                                   th:field="*{login}">
+                            <p class="text-danger" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></p>
                         </div>
-                        <div class="form-group d-flex">
+                        <div class="form-group">
                             <input type="password" class="form-control rounded-left" placeholder="Password" name="password"
-                                   th:field="*{password}" required>
+                                   th:field="*{password}">
+                            <p class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
                         </div>
-                        <div class="form-group d-flex">
+                        <div class="form-group">
                             <input type="password" class="form-control rounded-left" placeholder="Confirm password"
-                                   name="confirmPassword" th:field="*{confirmPassword}" required>
+                                   name="confirmPassword" th:field="*{confirmPassword}">
+                            <p class="text-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></p>
                         </div>
                         <div class="row justify-content-center" th:if="${param.error != null}">
                             <p class="text-danger" th:text="${param.error}"></p>
@@ -44,9 +49,10 @@
                             <p class="text-success" th:text="${param.message}"></p>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="form-control btn btn-secondary rounded submit px-3">Login</button>
+                            <button type="submit" class="form-control btn btn-secondary rounded submit px-3">Register</button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -54,5 +60,3 @@
 </div>
 <br><br>
 <br><br>
-</body>
-</html>

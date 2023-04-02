@@ -1,21 +1,23 @@
-<configuration status="WARN">
-    <appenders>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %M: %msg%n"/>
+        </Console>
 
-        <File name="fileLog" fileName="target/mylogfile.log">
-<!--            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
-            <patternLayout pattern="%d{ABSOLUTE} [%-5p] (%F:%L) - %m%n" />
-        </File>
+        <RollingFile name="File" fileName="logs/app.log" filePattern="logs/app-%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %M: %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
 
-        <console name="out" target="SYSTEM_OUT">
-<!--            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
-            <patternLayout pattern="%d{ABSOLUTE} [%-5p] (%F:%L) - %m%n" />
-        </console>
-    </appenders>
-
-    <loggers>
-        <root level="info">
-            <appender-ref ref="fileLog" level="info"/>
-            <appender-ref ref="out" level="info"/>
-        </root>
-    </loggers>
-</configuration>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console" level="info"/>
+            <AppenderRef ref="File" level="info"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -2,10 +2,15 @@ package com.spring.news.repository;
 
 import com.spring.news.model.User;
 
+import java.util.Optional;
+
 public interface UserRepository {
-    int takeUsersIdByLogin(String login, String password) throws UserRepositoryException;
-    User takeUserById(int id) throws UserRepositoryException;
+
+    Optional<User> takeUserByLogin(String login) throws UserRepositoryException;
     void addNewUser(User user) throws UserRepositoryException;
 
-    boolean checkIsLoginExists(String login) throws UserRepositoryException;
+    void updateUser(User user) throws UserRepositoryException;
+
+    void deleteUser(User user) throws UserRepositoryException;
+
 }

@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<body>
+
 <div class="container-fluid">
-
-
     <header class="d-flex py-3 mb-4 border-bottom">
         <div class="col-md-6 col-lg-6">
             <ul class="nav mb-2 mb-md-0 justify-content-end">
@@ -16,20 +12,15 @@
 
         <div class="col-md-2 col-lg-2 offset-2">
             <div th:if="${presentation =='authentication' or presentation =='registration' or presentation =='newsList'}">
-                <a th:href="@{/auth/showAuth}" class="btn btn-outline-secondary rounded">Login</a>
-                <a th:href="@{/reg/showReg}" class="btn btn-outline-secondary rounded">Register</a>
+                <a th:href="@{/user/showAuth}" class="btn btn-outline-secondary rounded">Login</a>
+                <a th:href="@{/user/showReg}" class="btn btn-outline-secondary rounded">Register</a>
             </div>
         </div>
-        <div class="col-md-2 col-lg-2 offset-1">
+        <div class="col-md-2 col-lg-2">
             <button class="navbar-toggler d-flex align-items-center col-md-3 mb-2 mb-md-0" type="button"
                     onclick="openNav()">
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
     </header>
-
-
 </div>
-
-</body>
-</html>
