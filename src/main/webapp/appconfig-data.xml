@@ -8,22 +8,21 @@
 		  http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!-- Define Database DataSource / connection pool -->
-    <bean id="myDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+    <bean id="myDataSource" class="org.apache.commons.dbcp2.BasicDataSource"
           destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver" />
-        <property name="jdbcUrl" value="${jdbc.url}" />
-        <property name="user" value="${jdbc.username}" />
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
         <property name="password" value="${jdbc.password}" />
 
-        <!-- these are connection pool properties for C3P0 -->
-        <property name="minPoolSize" value="${minPoolSize}" />
-        <property name="maxPoolSize" value="${maxPoolSize}" />
-        <property name="maxIdleTime" value="${maxIdleTime}" />
+        <!-- these are connection pool properties for DBCP -->
+        <property name="initialSize" value="${minPoolSize}" />
+        <property name="maxTotal" value="${maxPoolSize}" />
+        <property name="maxIdle" value="${maxIdleTime}" />
     </bean>
 
     <!-- Setup Hibernate session factory -->
-    <bean id="sessionFactory"
-          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="myDataSource" />
         <property name="packagesToScan" value="com.spring.news.model" />
         <property name="hibernateProperties">

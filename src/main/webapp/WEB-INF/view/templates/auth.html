@@ -6,27 +6,28 @@
         <div class="col-md-8 col-lg-5">
             <div class="card bg-light shadow-sm">
                 <div class="login-wrap p-5">
-                    <h2 class="text-center text-secondary mb-4">Welcome</h2>
+                    <h2 class="text-center text-secondary mb-4" th:text="#{label.welcome}"></h2>
                     <p class="text-center" ><img class="mx-auto" th:src="@{/images/93e3fb0eec46d93a0749a965747a7d9b.png}"/></p>
-                    <h3 class="text-center mb-4 text-secondary">Sign In</h3>
-                    <form th:action="@{/user/processForm}" method="post" class="login-form">
+                    <h3 class="text-center mb-4 text-secondary" th:text="#{label.signIn}"></h3>
+                    <form th:action="@{/process_login}" method="post" class="login-form">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                         <div class="form-group">
-                            <input type="text" class="form-control rounded-left" placeholder="Login" name="login"
+                            <input type="text" class="form-control rounded-left" th:placeholder="#{label.login}" name="username"
                                    required>
                         </div>
                         <div class="form-group d-flex">
-                            <input type="password" class="form-control rounded-left" placeholder="Password"
+                            <input type="password" class="form-control rounded-left" th:placeholder="#{label.password}"
                                    name="password" required>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="form-control btn btn-secondary rounded submit px-3">Login
+                            <button type="submit" class="form-control btn btn-secondary rounded submit px-3" th:text="#{label.LoginButton}">Login
                             </button>
                             <div class="pt-3 text-center">
-                            <a th:href="@{/user/showReg}" class="">Not a member?</a>
+                            <a th:href="@{/user/showReg}" class="" th:text="#{label.NotAMember}"></a>
                             </div>
                         </div>
-                        <div class="row justify-content-center" th:if="${param.error != null}">
-                            <p class="text-danger" th:text="${param.error}"></p>
+                        <div class="row justify-content-center" th:if="${param.error}">
+                            <p class="text-danger" th:text="#{label.login.error}"></p>
                         </div>
                     </form>
                 </div>

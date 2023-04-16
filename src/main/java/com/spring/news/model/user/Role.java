@@ -1,4 +1,4 @@
-package com.spring.news.model;
+package com.spring.news.model.user;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -46,10 +45,4 @@ public class Role implements Serializable {
         return Objects.hash(id, roleName, userList);
     }
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                "roleName='" + roleName + '\'' +
-                '}';
-    }
 }

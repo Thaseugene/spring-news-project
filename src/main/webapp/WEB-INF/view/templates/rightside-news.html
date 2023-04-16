@@ -1,0 +1,37 @@
+<p class="border-bottom text-secondary">Latest news</p>
+<div class="row">
+    <div th:each="news, iter: ${latestNews}">
+        <div class="card mb-2">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <a th:href="@{/news/view/__${news.id}__}">
+                    <img th:src="${news.imagePath}" alt="Image" class="card-img">
+                    </a>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <small class="card-text" th:text="${news.title}">.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:if="${presentation != 'viewNews'}">
+    <br>
+    <p class="border-bottom text-secondary">Tags</p>
+    <div class="row">
+        <div class="col-12">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active bg-transparent" id="list-home-list"
+                   data-toggle="list" href="#list-home" role="tab">All</a>
+                <a class="list-group-item list-group-item-action bg-transparent" id="list-profile-list"
+                   data-toggle="list" href="#list-profile" role="tab">Sport</a>
+                <a class="list-group-item list-group-item-action bg-transparent" id="list-messages-list"
+                   data-toggle="list" href="#list-messages" role="tab">Politic</a>
+                <a class="list-group-item list-group-item-action bg-transparent" id="list-settings-list"
+                   data-toggle="list" href="#list-settings" role="tab">Travel</a>
+            </div>
+        </div>
+    </div>
+</div>

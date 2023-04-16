@@ -1,4 +1,4 @@
-package com.spring.news.model;
+package com.spring.news.model.user;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "user_details")
-public class UserDetails implements Serializable {
+public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -24,24 +24,24 @@ public class UserDetails implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotNull(message = "Name should not be null")
+    @NotNull(message = "Name should not be empty")
     @Size(min = 3, message = "Name should not be less than 3 characters")
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull(message = "Surname should not be null")
+    @NotNull(message = "Surname should not be empty")
     @Size(min = 3, message = "Surname should not be less than 3 characters")
     @Column(name = "surname", nullable = false)
     private String surname;
 
     @Column(name = "register_date")
-    private Date registerDate = new Date();
+    private Date registerDate;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserDetails that = (UserDetails) o;
+        UserInfo that = (UserInfo) o;
         return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(registerDate, that.registerDate);
     }
 
@@ -50,12 +50,4 @@ public class UserDetails implements Serializable {
         return Objects.hash(id, name, surname, registerDate);
     }
 
-    @Override
-    public String toString() {
-        return "UserDetails{" +
-                "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", registerDate=" + registerDate +
-                '}';
-    }
 }

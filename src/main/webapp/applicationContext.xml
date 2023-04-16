@@ -7,8 +7,10 @@
           http://www.springframework.org/schema/context
           http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-    <context:component-scan base-package="com.spring.news"/>
+
     <context:property-placeholder location="classpath:database.properties"/>
+    <context:component-scan base-package="com.spring.news"/>
+
 
     <import resource="appconfig-mvc.xml" />
     <import resource="appconfig-data.xml" />

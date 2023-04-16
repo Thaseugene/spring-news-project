@@ -1,6 +1,7 @@
 package com.spring.news.repository;
 
-import com.spring.news.model.User;
+import com.spring.news.model.user.User;
+import com.spring.news.repository.exception.UserRepositoryException;
 
 import java.util.Optional;
 

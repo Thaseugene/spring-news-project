@@ -1,0 +1,32 @@
+<div class="container" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div class="row">
+        <div class="col-md-8 col-lg-8">
+            <a class="border-bottom text-secondary" th:href="@{/news/list}">All news </a> > <span class="border-bottom text-secondary" th:utext="${news.title}"></span>
+            <form method="post" th:action="@{/edit/deactivate}">
+                <div class="card mb-4 bg-transparent border-0 align-items-center">
+                    <h3 th:utext="${news.title}"></h3>
+                    <img class="card-img-top" th:src="${news.imagePath}" alt="Card image cap" height="auto"
+                         width="100%">
+                    <div class="card-body">
+                        <th:block th:utext="${news.content}"></th:block>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <input type="hidden" th:name="'newsIds'" th:value="${news.id}">
+                            <small class="text-muted"
+                                   th:text="${#dates.format(news.publicationDate, 'yyyy-MM-dd')}"></small>
+                            <small th:text="${news.tag}"></small>
+                            <small class="text-muted">Author: <span
+                                    th:text="${news.author.userInfo.name}"></span></small>
+                        </div>
+                    </div>
+                </div>
+                <span sec:authorize="hasRole('ADMIN')">
+        <button type="submit" class="btn btn-secondary">Deactivate news</button>
+        <a type="submit" class="btn btn-secondary" th:href="@{/news/edit/__${news.id}__}">Edit news</a>
+            </span>
+            </form>
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <div th:replace="templates/rightside-news.html"></div>
+        </div>
+    </div>
+</div>

@@ -1,22 +1,19 @@
-package com.spring.news.model;
+package com.spring.news.model.user;
 
+import com.spring.news.model.news.News;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@Builder
 @Entity
 @Table(name = "users")
 
@@ -28,37 +25,37 @@ public class User implements Serializable {
     @Column(name = "id")
     private int id;
 
-    @NotNull
+    @NotNull(message = "Login should not be empty")
     @Size(min = 3, message = "Login should not be less than 3 characters")
-    @Column(name = "login", nullable = false)
-    private String login;
+    @Column(name = "username", nullable = false)
+    private String username;
 
-    @NotNull
+    @NotNull(message = "Password should not be empty")
     @Size(min = 3, message = "Password should not be less than 3 characters")
     @Column(name = "password", nullable = false)
     private String password;
 
     @Transient
-    @NotNull
+    @NotNull(message = "Password should not be empty")
     @Size(min = 3, message = "Password should not be less than 3 characters")
     transient private String confirmPassword;
 
-    @NotNull
+    @NotNull(message = "Email should not be empty")
     @Size(min = 3, message = "Email should not be less than 3 characters")
     @Column(name = "email", nullable = false)
     private String email;
 
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Role role = new Role(2);
+    private Role role;
 
     @Valid
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_details_id")
-    private UserDetails userDetails;
+    private UserInfo userInfo;
 
     @Column(name = "is_active", nullable = false)
-    private boolean  isActive = true;
+    private boolean  isActive;
 
     @OneToMany(mappedBy = "author", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private List<News> newsList;
@@ -68,11 +65,11 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && isActive == user.isActive && Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(confirmPassword, user.confirmPassword) && Objects.equals(email, user.email) && Objects.equals(role, user.role) && Objects.equals(userDetails, user.userDetails) && Objects.equals(newsList, user.newsList);
+        return id == user.id && isActive == user.isActive && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(confirmPassword, user.confirmPassword) && Objects.equals(email, user.email) && Objects.equals(role, user.role) && Objects.equals(userInfo, user.userInfo) && Objects.equals(newsList, user.newsList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, confirmPassword, email, role, userDetails, isActive, newsList);
+        return Objects.hash(id, username, password, confirmPassword, email, role, userInfo, isActive, newsList);
     }
 }

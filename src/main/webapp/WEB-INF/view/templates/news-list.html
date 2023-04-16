@@ -1,29 +1,89 @@
-
-<div class="container">
+<div class="container" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="row">
         <div class="col-md-8 col-lg-8">
-            <p class="border-bottom text-secondary">News</p>
-            <div  th:each="news, index: ${newsList}">
-                <div class="card mb-4 shadow-sm">
-                    <img class="card-img-top" th:src="${news.imagePath}" alt="Card image cap"
-                         height="500"
-                         width="100%">
-                    <div class="card-body">
-                        <p class="card-text" th:text="${news.briefNews}"></p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+            <form method="post" th:action="@{/edit/deactivate}">
+                <p class="border-bottom text-secondary" th:text="#{label.news}"></p>
+                <div th:with="chunkSize=${itemsPerPage != null && itemsPerPage > 0 ? itemsPerPage - 1 : 0}">
+                    <div th:each="news, iterStat : ${newsList}">
+                        <div class="card mb-4 shadow-sm">
+                            <img class="card-img-top" th:src="${news.imagePath}" alt="Card image cap"
+                                 height="500"
+                                 width="100%">
+                            <div class="card-body">
+                                <p class="card-text" th:text="${news.briefNews}"></p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mb-2">
+                                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                                           th:href="@{/news/view/__${news.id}__}" th:text="#{label.view}"></a>
+                                        <span sec:authorize="hasRole('ADMIN')">
+                                            <a type="button" class="btn btn-sm btn-outline-secondary"
+                                               th:href="@{/news/edit/__${news.id}__}" th:text="#{label.editButton}"></a>
+                                        </span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span sec:authorize="hasRole('ADMIN')">
+                                        <div class="form-check mb-3 mr-5">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input"
+                                                       id="customCheck1"
+                                                       th:name="'newsIds'" th:value="${news.id}">
+                                                <label class="custom-control-label" for="customCheck1"
+                                                       th:text="#{label.select}"></label>
+                                            </div>
+                                        </div>
+                                        </span>
+                                        <div class="d-flex align-items-center">
+                                            <p class="text-muted mr-2"
+                                               th:text="${#dates.format(news.publicationDate, 'yyyy-MM-dd')}"></p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <small class="text-muted"
-                                   th:text="${#dates.format(news.publicationDate, 'yyyy-MM-dd')}"></small>
                         </div>
+                        <div th:if="${chunkSize > 0 and iterStat.index % chunkSize == chunkSize}"></div>
                     </div>
                 </div>
-            </div>
+                <nav th:if="${totalPages > 1}">
+                    <ul class="pagination justify-content-center mt-3">
+                        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                            <a class="page-link" th:href="@{/news/list(page=1, pageSize=${pageSize})}">&laquo;</a>
+                        </li>
+                        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                            <a class="page-link" th:href="@{/news/list(page=${currentPage - 1}, pageSize=${pageSize})}">&lsaquo;</a>
+                        </li>
+                        <li class="page-item" th:each="page : ${#numbers.sequence(1, totalPages)}">
+                            <a class="page-link" th:href="@{/news/list(page=${page}, pageSize=${pageSize})}"
+                               th:text="${page}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+                            <a class="page-link" th:href="@{/news/list(page=${currentPage + 1}, pageSize=${pageSize})}">&rsaquo;</a>
+                        </li>
+                        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+                            <a class="page-link" th:href="@{/news/list(page=${totalPages}, pageSize=${pageSize})}">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+                <span sec:authorize="hasRole('ADMIN')">
+                <button type="submit" class="btn btn-danger" th:text="#{label.deactivate}"></button>
+                </span>
+            </form>
         </div>
         <div class="col-md-4 col-lg-4">
-            <p class="border-bottom text-secondary">Tags</p>
+            <div th:replace="templates/rightside-news.html"></div>
+        </div>
+    </div>
+    <div th:if="${param.message}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+        <div class="toast" style="position: absolute; top: 85px; right: 200px;">
+            <div class="toast-header">
+                <strong class="mr-auto">Note</strong>
+                <small>just now</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-success" th:text="${param.message}">
+
+            </div>
         </div>
     </div>
 </div>

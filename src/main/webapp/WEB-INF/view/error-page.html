@@ -13,14 +13,17 @@
 </head>
 <body>
 
-<div class="d-flex justify-content-center align-items-center" id="main">
-    <h1 class="mr-3 pr-3 align-top border-right inline-block align-content-center">Error</h1>
-    <div class="inline-block align-middle">
-        <h2 class="font-weight-normal lead" id="desc" th:text="${param.error}">
-        </h2>
-    </div>
+<div class="container mt-5">
     <div class="row justify-content-center">
-        <a th:href="@{/}" class="btn btn-round red waves-effect waves-light m-b-40">Back to home</a>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h1 class="card-title">An error occurred</h1>
+                    <p class="card-text">Something wrong, please try later</p>
+                    <a th:href="@{/news/list}" class="btn btn-primary">Back to Home</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

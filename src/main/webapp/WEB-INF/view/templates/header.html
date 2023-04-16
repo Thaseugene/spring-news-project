@@ -1,26 +1,40 @@
-
-<div class="container-fluid">
-    <header class="d-flex py-3 mb-4 border-bottom">
-        <div class="col-md-6 col-lg-6">
-            <ul class="nav mb-2 mb-md-0 justify-content-end">
-                <li><a th:href="@{/news/list}" class="nav-link px-2 link-secondary">Home</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">Features</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">FAQs</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">About</a></li>
+<div class="container-fluid" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <header class="d-flex py-3 mb-4 border-bottom d-flex">
+        <div class="col-md-2 col-lg-2 d-flex d-flex offset-md-5 offset-lg-5 justify-content-center">
+            <ul class="nav mb-2 mb-md-0">
+                <li><a th:href="@{/news/list}" class="nav-link px-2 link-secondary" th:text="#{label.home}"></a></li>
             </ul>
         </div>
+        <div class="col-md-2 col-lg-2 offset-1 d-flex">
+            <span sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-outline-secondary rounded"
+                                th:attr="data-csrf=${_csrf.token}" th:text="#{label.logout}"></button>
+                    </form>
+                </span>
+            <span class="d-flex mt-2 ml-2" sec:authorize="isAuthenticated()">
+                <span th:text="#{label.welcomeBack}"></span><span sec:authentication="name"></span>
+            </span>
+            <span sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/user/showAuth}" class="btn btn-outline-secondary rounded" th:text="#{label.login}"></a>
+                    <a th:href="@{/user/showReg}" class="btn btn-outline-secondary rounded" th:text="#{label.registration}"></a>
+            </span>
 
-        <div class="col-md-2 col-lg-2 offset-2">
-            <div th:if="${presentation =='authentication' or presentation =='registration' or presentation =='newsList'}">
-                <a th:href="@{/user/showAuth}" class="btn btn-outline-secondary rounded">Login</a>
-                <a th:href="@{/user/showReg}" class="btn btn-outline-secondary rounded">Register</a>
-            </div>
         </div>
-        <div class="col-md-2 col-lg-2">
-            <button class="navbar-toggler d-flex align-items-center col-md-3 mb-2 mb-md-0" type="button"
+        <div class="col-md-2 col-lg-2 d-flex mx-auto">
+            <span sec:authorize="hasRole('ADMIN')">
+            <button class="navbar-toggler mx-auto" type="button"
                     onclick="openNav()">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            </span>
+            <form th:action="@{/user/changeLocale}" method="post">
+                <select class="form-control form-control-sm mt-1" name="lang" onchange="submit()">
+                    <option value="ru" th:selected="${#locale.language == 'ru'}" th:text="#{label.language.ru}"></option>
+                    <option value="en" th:selected="${#locale.language == 'en'}" th:text="#{label.language.en}"></option>
+                </select>
+            </form>
         </div>
     </header>
+
 </div>

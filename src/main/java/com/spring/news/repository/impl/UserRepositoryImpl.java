@@ -1,8 +1,8 @@
 package com.spring.news.repository.impl;
 
-import com.spring.news.model.User;
+import com.spring.news.model.user.User;
 import com.spring.news.repository.UserRepository;
-import com.spring.news.repository.UserRepositoryException;
+import com.spring.news.repository.exception.UserRepositoryException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -19,7 +19,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     private final SessionFactory sessionFactory;
     private static final Logger LOGGER = LogManager.getRootLogger();
-    public static final String COLUMN_LABEL_LOGIN = "login";
+    public static final String COLUMN_LABEL_LOGIN = "username";
 
     @Autowired
     private UserRepositoryImpl(SessionFactory sessionFactory) {
@@ -27,14 +27,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     }
 
-    private static final String GET_USER_ID_QUERY = "from User where login = :login";
+    private static final String GET_USER_ID_QUERY = "from User where username = :username";
 
     @Override
-    public Optional<User> takeUserByLogin(String login) throws UserRepositoryException {
+    public Optional<User> takeUserByLogin(String username) throws UserRepositoryException {
         try {
             Session session = sessionFactory.getCurrentSession();
             Query<User> query = session.createQuery(GET_USER_ID_QUERY, User.class);
-            query.setParameter(COLUMN_LABEL_LOGIN, login);
+            query.setParameter(COLUMN_LABEL_LOGIN, username);
             return Optional.ofNullable(query.uniqueResult());
         } catch (HibernateException e) {
             LOGGER.warn("Problems with getting info from database or another exception occurred: {} - {}",

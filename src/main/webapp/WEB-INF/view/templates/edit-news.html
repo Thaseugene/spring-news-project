@@ -1,0 +1,71 @@
+<br><br>
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12 col-lg-12">
+            <div class="card bg-light shadow-sm">
+                <div class="login-wrap p-5">
+                    <h2 class="text-center mb-4 text-secondary"th:text="#{label.edit}"></h2>
+                    <form th:action="@{/edit/processEditForm}" method="post" class="login-form"
+                          th:object="${news}">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6 form-group">
+                                <input type="text" class="form-control rounded-left" th:plcaeholder="#{label.title}" name="title"
+                                       th:field="*{title}">
+                                <p class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+                            </div>
+                            <div class="col-md-6 col-lg-6 form-group">
+                                <select class="custom-select" th:field="*{tag}">
+                                    <option selected disabled value="" th:text="#{label.tag}"></option>
+                                    <option value="POLITIC">Politic</option>
+                                    <option value="SPORT">Sport</option>
+                                    <option value="TRAVEL">Travel</option>
+                                </select>
+                                <p class="text-danger" th:if="${#fields.hasErrors('tag')}"
+                                   th:errors="*{tag}"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control rounded-left" th:plcaeholder="#{label.brief}" name="briefNews"
+                                   th:field="*{briefNews}">
+                            <p class="text-danger" th:if="${#fields.hasErrors('briefNews')}"
+                               th:errors="*{briefNews}"></p>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control rounded-left" th:plcaeholder="#{label.imagePath}"
+                                   name="imagePath"
+                                   th:field="*{imagePath}">
+                            <p class="text-danger" th:if="${#fields.hasErrors('imagePath')}"
+                               th:errors="*{imagePath}"></p>
+                        </div>
+
+                        <input type="hidden" class="form-control rounded-left" th:field="*{id}">
+                        <input type="hidden" class="form-control rounded-left" th:field="*{publicationDate}">
+                        <input type="hidden" class="form-control rounded-left" th:field="*{creationDate}">
+
+                        <div class="form-group">
+                            <textarea id="textarea5" type="text" class="form-control rounded-left" th:plcaeholder="#{label.content}"
+                                      name="email"
+                                      th:field="*{content}"></textarea>
+                            <p class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
+                        </div>
+
+                        <div class="row justify-content-center" th:if="${param.error != null}">
+                            <p class="text-danger" th:text="${param.error}"></p>
+                        </div>
+                        <div class="row justify-content-center" th:if="${param.message != null}">
+                            <p class="text-success" th:text="${param.message}"></p>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="form-control btn btn-secondary rounded submit px-3" th:text="#{label.updateButton}"></button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<br><br>

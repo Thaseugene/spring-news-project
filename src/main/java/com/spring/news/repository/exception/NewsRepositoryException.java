@@ -1,4 +1,4 @@
-package com.spring.news.repository;
+package com.spring.news.repository.exception;
 
 public class NewsRepositoryException extends Exception{
 
