@@ -69,7 +69,7 @@
             <div th:replace="templates/rightside-news.html"></div>
         </div>
     </div>
-    <div th:if="${param.message}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+    <div th:if="${message}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
         <div class="toast" style="position: absolute; top: 85px; right: 200px;">
             <div class="toast-header">
                 <strong class="mr-auto">Note</strong>
@@ -78,7 +78,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="toast-body text-success" th:text="${param.message}">
+            <div class="toast-body text-success" th:text="${message}">
 
             </div>
         </div>

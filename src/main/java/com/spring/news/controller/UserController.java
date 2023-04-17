@@ -71,6 +71,7 @@ public class UserController {
     @PostMapping("/processRegForm")
     public String processForm(@Valid @ModelAttribute("user") User user,
                               BindingResult result,
+                              Model model,
                               RedirectAttributes redirectAttributes) {
         try {
             userValidator.validate(user, result);

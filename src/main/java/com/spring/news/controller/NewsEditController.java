@@ -77,11 +77,11 @@ public class NewsEditController {
             } else {
                 news.setAuthor(((UserDetailsImpl) ((Authentication) principal).getPrincipal()).getUser());
                 newsService.addNews(news);
-                model.addAttribute(MESSAGE_PARAM_NAME, NEWS_ADDED);
+                redirectAttributes.addFlashAttribute(MESSAGE_PARAM_NAME, NEWS_ADDED);
                 return REDIRECT_NEWS_LIST;
             }
         } catch (NewsServiceException e) {
-            model.addAttribute(ERROR_PARAM_NAME, e.getMessage());
+            redirectAttributes.addFlashAttribute(ERROR_PARAM_NAME, e.getMessage());
             return REDIRECT_ERROR_PAGE;
         }
     }
@@ -100,11 +100,11 @@ public class NewsEditController {
             } else {
                 news.setAuthor(((UserDetailsImpl) ((Authentication) principal).getPrincipal()).getUser());
                 newsService.updateNews(news);
-                model.addAttribute(MESSAGE_PARAM_NAME, NEWS_UPDATED);
+                redirectAttributes.addFlashAttribute(MESSAGE_PARAM_NAME, NEWS_UPDATED);
                 return REDIRECT_NEWS_LIST;
             }
         } catch (NewsServiceException e) {
-            model.addAttribute(ERROR_PARAM_NAME, e.getMessage());
+            redirectAttributes.addFlashAttribute(ERROR_PARAM_NAME, e.getMessage());
             return REDIRECT_ERROR_PAGE;
         }
     }
