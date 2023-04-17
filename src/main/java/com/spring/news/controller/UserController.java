@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -59,28 +60,30 @@ public class UserController {
     }
 
     @GetMapping("/showReg")
-    public String showRegForm(Model model, @ModelAttribute("user") User user) {
+    public String showRegForm(Model model) {
         model.addAttribute(VIEW_PARAM_NAME, REG_VIEW_NAME);
+        if (!model.containsAttribute(USER_FORM)) {
+            model.addAttribute(USER_FORM, new User());
+        }
         return BASE_VIEW;
     }
 
     @PostMapping("/processRegForm")
     public String processForm(@Valid @ModelAttribute("user") User user,
                               BindingResult result,
-                              Model model) {
+                              RedirectAttributes redirectAttributes) {
         try {
             userValidator.validate(user, result);
             if (result.hasErrors()) {
-                model.addAttribute(VIEW_PARAM_NAME, REG_VIEW_NAME);
-                model.addAttribute(USER_FORM, user);
-                return BASE_VIEW;
+                redirectAttributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + USER_FORM, result);
+                redirectAttributes.addFlashAttribute(USER_FORM, user);
             } else {
                 userService.addNewUser(user);
-                model.addAttribute(MESSAGE_PARAM_NAME, ACCOUNT_SUCCESSFULLY_CREATED);
-                return REDIRECT_REG_SHOW_REG;
+                redirectAttributes.addFlashAttribute(MESSAGE_PARAM_NAME, ACCOUNT_SUCCESSFULLY_CREATED);
             }
+            return REDIRECT_REG_SHOW_REG;
         } catch (UserServiceException e) {
-            model.addAttribute(ERROR_PARAM_NAME, e.getMessage());
+            redirectAttributes.addFlashAttribute(ERROR_PARAM_NAME, e.getMessage());
             return REDIRECT_ERROR_PAGE;
         }
     }

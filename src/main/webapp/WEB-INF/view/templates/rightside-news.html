@@ -1,9 +1,9 @@
 <p class="border-bottom text-secondary">Latest news</p>
 <div class="row">
     <div th:each="news, iter: ${latestNews}">
-        <div class="card mb-2">
+        <div class="card mb-2 d-flex">
             <div class="row no-gutters">
-                <div class="col-md-4">
+                <div class="col-md-4 d-flex align-items-center">
                     <a th:href="@{/news/view/__${news.id}__}">
                     <img th:src="${news.imagePath}" alt="Image" class="card-img">
                     </a>

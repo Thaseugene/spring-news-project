@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -34,6 +35,8 @@ public class NewsEditController {
     public static final String MESSAGE_PARAM_NAME = "message";
     public static final String NEWS_ADDED = "News successfully added";
     public static final String NEWS_UPDATED = "News successfully updated";
+    public static final String REDIRECT_NEWS_EDIT = "redirect:/news/edit/%s";
+    public static final String REDIRECT_NEWS_ADD_NEWS = "redirect:/news/edit/addNews";
     private final NewsService newsService;
 
     @Autowired
@@ -64,12 +67,13 @@ public class NewsEditController {
     public String processAddForm(@Valid @ModelAttribute("news") News news,
                                  BindingResult result,
                                  Model model,
-                                 Principal principal) {
+                                 Principal principal,
+                                 RedirectAttributes redirectAttributes) {
         try {
             if (result.hasErrors()) {
-                model.addAttribute(VIEW_PARAM_NAME, ADD_VIEW_NAME);
-                model.addAttribute(NEWS_PARAM_NAME, news);
-                return BASE_VIEW;
+                redirectAttributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + NEWS_PARAM_NAME, result);
+                redirectAttributes.addFlashAttribute(NEWS_PARAM_NAME, news);
+                return REDIRECT_NEWS_ADD_NEWS;
             } else {
                 news.setAuthor(((UserDetailsImpl) ((Authentication) principal).getPrincipal()).getUser());
                 newsService.addNews(news);
@@ -86,12 +90,13 @@ public class NewsEditController {
     public String processEditForm(@Valid @ModelAttribute("news") News news,
                                   BindingResult result,
                                   Model model,
-                                  Principal principal) {
+                                  Principal principal,
+                                  RedirectAttributes redirectAttributes) {
         try {
             if (result.hasErrors()) {
-                model.addAttribute(VIEW_PARAM_NAME, EDIT_VIEW_NAME);
-                model.addAttribute(NEWS_PARAM_NAME, news);
-                return BASE_VIEW;
+                redirectAttributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + NEWS_PARAM_NAME, result);
+                redirectAttributes.addFlashAttribute(NEWS_PARAM_NAME, news);
+                return String.format(REDIRECT_NEWS_EDIT, news.getId());
             } else {
                 news.setAuthor(((UserDetailsImpl) ((Authentication) principal).getPrincipal()).getUser());
                 newsService.updateNews(news);

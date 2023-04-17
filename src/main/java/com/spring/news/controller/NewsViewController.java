@@ -2,6 +2,7 @@ package com.spring.news.controller;
 
 
 import com.spring.news.model.news.News;
+import com.spring.news.model.user.User;
 import com.spring.news.security.UserDetailsImpl;
 import com.spring.news.service.NewsService;
 import com.spring.news.service.exception.NewsServiceException;
@@ -98,9 +99,11 @@ public class NewsViewController {
     @GetMapping("/edit/{newsId}")
     public String showEditPageForm(@PathVariable int newsId, Model model) {
         try {
-            News news = newsService.takeNewsById(newsId);
             model.addAttribute(VIEW_PARAM_NAME, EDIT_NEWS_PARAM);
-            model.addAttribute(NEWS_PARAM_NAME, news);
+            if (!model.containsAttribute(NEWS_PARAM_NAME)) {
+                News news = newsService.takeNewsById(newsId);
+                model.addAttribute(NEWS_PARAM_NAME, news);
+            }
             return BASE_VIEW;
         } catch (NewsServiceException e) {
             model.addAttribute(ERROR_PARAM_NAME, e.getMessage());
@@ -109,64 +112,12 @@ public class NewsViewController {
     }
 
     @GetMapping("/edit/addNews")
-    public String showAddNewsForm(Model model, @ModelAttribute("news") News news) {
+    public String showAddNewsForm(Model model) {
         model.addAttribute(VIEW_PARAM_NAME, ADD_NEWS_PARAM);
+        if (!model.containsAttribute(NEWS_PARAM_NAME)) {
+            model.addAttribute(NEWS_PARAM_NAME, new News());
+        }
         return BASE_VIEW;
-    }
-
-    @PostMapping("/edit/processAddForm")
-    public String processAddForm(@Valid @ModelAttribute("news") News news,
-                                 BindingResult result,
-                                 Model model,
-                                 Principal principal) {
-        try {
-            if (result.hasErrors()) {
-                result.getAllErrors().forEach(System.out::println);
-                model.addAttribute(VIEW_PARAM_NAME, ADD_NEWS_PARAM);
-                model.addAttribute(ERROR_PARAM_NAME, news);
-                return BASE_VIEW;
-            } else {
-                news.setAuthor(((UserDetailsImpl) ((Authentication) principal).getPrincipal()).getUser());
-                newsService.addNews(news);
-                return REDIRECT_NEWS_LIST;
-            }
-        } catch (NewsServiceException e) {
-            model.addAttribute(ERROR_PARAM_NAME, e.getMessage());
-            return REDIRECT_ERROR_PAGE;
-        }
-    }
-
-    @PostMapping("/edit/processEditForm")
-    public String processEditForm(@Valid @ModelAttribute("news") News news,
-                                  BindingResult result,
-                                  Model model,
-                                  Principal principal) {
-        try {
-            if (result.hasErrors()) {
-                model.addAttribute(VIEW_PARAM_NAME, ADD_NEWS_PARAM);
-                model.addAttribute(NEWS_PARAM_NAME, news);
-                return BASE_VIEW;
-            } else {
-                news.setAuthor(((UserDetailsImpl) ((Authentication) principal).getPrincipal()).getUser());
-                newsService.updateNews(news);
-                return REDIRECT_NEWS_LIST;
-            }
-        } catch (NewsServiceException e) {
-            model.addAttribute(ERROR_PARAM_NAME, e.getMessage());
-            return REDIRECT_ERROR_PAGE;
-        }
-    }
-
-    @PostMapping("/deactivate")
-    public String deactivateNews(@RequestParam("newsIds") List<Integer> newsIds, Model model) {
-
-        try {
-            newsService.deactivateNews(newsIds);
-            return REDIRECT_NEWS_LIST;
-        } catch (NewsServiceException e) {
-            model.addAttribute(ERROR_PARAM_NAME, e.getMessage());
-            return REDIRECT_ERROR_PAGE;
-        }
     }
 
     @ExceptionHandler(Exception.class)
